@@ -6,6 +6,7 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager _GameManagerInstance { get; private set; }
     private int i_Score;
 
     public GameObject _player;
@@ -15,6 +16,12 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+         if (_GameManagerInstance == null)
+        {
+            _GameManagerInstance = this;
+        }
+        //DontDestroyOnLoad(this.gameObject);
+        
         this.gameObject.transform.position = new Vector3(0, 0, 0);
     }
 
@@ -24,7 +31,7 @@ public class GameManager : MonoBehaviour
         _gameOverCanvas.GetComponent<Canvas>().enabled = false;
 
         _player = Instantiate(_player);
-        _player.GetComponent<FlyMovement>().gameManager = this; 
+        _player.GetComponent<BirdPlayerController>().gameManager = this; 
         _player.transform.position = new Vector3(-5, 0, 0);
 
         Debug.Log("Player spawned");  

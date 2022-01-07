@@ -30,9 +30,9 @@ public class SpawnManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (new_pipePrefab.transform.position.x <= -12f)
+        if (new_pipePrefab.transform.position.x <=  4f)
         {
-            Destroy(new_pipePrefab);
+            //Destroy(new_pipePrefab);
             new_pipePrefab = Instantiate(pipePrefab);
             new_pipePrefab.GetComponent<PipeMovement>()._gameManager = this._gameManager;
             new_pipePrefab.transform.position = transform.position + new Vector3(12, Random.Range(-f_HeightRange, f_HeightRange), 0);
