@@ -4,28 +4,30 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-    public static AudioManager _sharedInstance;
+    public static AudioManager _AudioManagerInstance;
+    private AudioSource _audioSource;
 
     private void Awake()
     {
-        if (_sharedInstance == null)
+        // Singleton pattern
+        if (_AudioManagerInstance == null)
         {
-            _sharedInstance = this;
+            _AudioManagerInstance = this;
             DontDestroyOnLoad(this.gameObject);
         }
         else
         {
             Destroy(this.gameObject);   
         }
+        this.gameObject.transform.position = new Vector3(0, 0, 0);
     }
 
-    // Start is called before the first frame update
     void Start()
     {
-        
+        _audioSource = GetComponent<AudioSource>();
+        _audioSource.Play();
     }
 
-    // Update is called once per frame
     void Update()
     {
         

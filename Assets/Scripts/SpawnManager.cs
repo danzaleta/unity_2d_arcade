@@ -7,38 +7,36 @@ public class SpawnManager : MonoBehaviour
     public GameObject pipePrefab;
     private GameObject new_pipePrefab;
 
-    public GameManager _gameManager;
-
-    private float f_Timer = 0;
+    private float _Timer = 0;
     
-    public float f_MaxTimer = 5;
-    public float f_HeightRange;
+    public float _MaxTimer = 5;
+    public float _HeightRange;
 
-    private void Awake()
+     void Awake()
     {
         this.gameObject.transform.position = new Vector3(0,0,0);
     }
 
-    // Start is called before the first frame update
     void Start()
     {
-        new_pipePrefab = Instantiate(pipePrefab);
-        new_pipePrefab.GetComponent<PipeMovement>()._gameManager = this._gameManager;
-        new_pipePrefab.transform.position = transform.position + new Vector3(12, Random.Range(-f_HeightRange, f_HeightRange), 0);
+        // Spawns initial pipe
+        SpawnPipes();   
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (new_pipePrefab.transform.position.x <=  4f)
         {
-            //Destroy(new_pipePrefab);
-            new_pipePrefab = Instantiate(pipePrefab);
-            new_pipePrefab.GetComponent<PipeMovement>()._gameManager = this._gameManager;
-            new_pipePrefab.transform.position = transform.position + new Vector3(12, Random.Range(-f_HeightRange, f_HeightRange), 0);
-            f_Timer = 0;
+            SpawnPipes();
+            _Timer = 0;
         }
 
-        f_Timer += Time.deltaTime;
+        _Timer += Time.deltaTime;
+    }
+    
+    private void SpawnPipes()
+    {
+        new_pipePrefab = Instantiate(pipePrefab);
+        new_pipePrefab.transform.position = transform.position + new Vector3(12, Random.Range(-_HeightRange, _HeightRange), 0);
     }
 }

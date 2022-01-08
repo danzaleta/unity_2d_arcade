@@ -6,8 +6,9 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager _GameManagerInstance { get; private set; }
-    private int i_Score;
+    public static GameManager _GameManagerInstance;
+
+    private int _Score;
 
     public GameObject _player;
     public GameObject _pipeManager;
@@ -17,11 +18,13 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
          if (_GameManagerInstance == null)
-        {
-            _GameManagerInstance = this;
-        }
-        //DontDestroyOnLoad(this.gameObject);
-        
+         {
+            _GameManagerInstance = this; 
+         }
+         else
+         {
+            Destroy(this.gameObject);  
+         }
         this.gameObject.transform.position = new Vector3(0, 0, 0);
     }
 
@@ -31,10 +34,7 @@ public class GameManager : MonoBehaviour
         _gameOverCanvas.GetComponent<Canvas>().enabled = false;
 
         _player = Instantiate(_player);
-        _player.GetComponent<BirdPlayerController>().gameManager = this; 
         _player.transform.position = new Vector3(-5, 0, 0);
-
-        Debug.Log("Player spawned");  
     }
 
     // Update is called once per frame
@@ -49,17 +49,29 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void Pause()
+    {
+        if (Time.timeScale != 0)
+        {
+            Time.timeScale = 0;
+        }
+        else
+        {
+            Time.timeScale = 1;
+        }
+    }
+
     public void AddScore()
     {
-        i_Score++;
-        _scoreText.text = i_Score.ToString();
+        _Score++;
+        _scoreText.text = _Score.ToString();
     }
 
     // Game Over methods
 
     public void GameOver()
     {
-        Time.timeScale = 0;
+        Time.timeScale = 0.2f;
         ShowGameOverScreen();
     }
 
@@ -68,15 +80,8 @@ public class GameManager : MonoBehaviour
         if (_gameOverCanvas != null)
         {
             _gameOverCanvas.GetComponent<Canvas>().enabled = true;
-            ShowGameResults();  
         }
     }
-
-    private void ShowGameResults()
-    {
-       
-    }
-
 
     // Game Over screen button methods
 
@@ -100,6 +105,7 @@ public class GameManager : MonoBehaviour
 
     public void ExitGame()
     {
+        // Only works with editor mode 
         #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
         #endif

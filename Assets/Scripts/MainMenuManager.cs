@@ -5,17 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    // Button methods
 
     public void PlayFlappyBird()
     {
@@ -23,7 +13,8 @@ public class MainMenuManager : MonoBehaviour
     }
 
     public void Exit()
-    {
+    {   
+        // Only works with editor mode
         #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
         #endif

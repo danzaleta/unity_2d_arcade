@@ -3,58 +3,65 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BirdPlayerController : MonoBehaviour
-{
-    public float f_Speed = 5;
-    private Rigidbody2D rb;
+{  
+    // PUBLIC
+    public float _speed = 3.2f;
 
-    public GameManager gameManager;
+    // PRIVATE
+    private bool _isPlaying;
+    private Rigidbody2D rb;
+    private Animator _animator;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = 0;
+
+        _animator = GetComponent<Animator>();
     }
 
-    // Start is called before the first frame update
     void Start()
     {
-        
+        _isPlaying = true;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (_isPlaying)
         {
-            if (rb.gravityScale != 1)
+            // Jump action
+            if (Input.GetKeyDown(KeyCode.Space))
             {
-                rb.gravityScale = 1;
+                if (rb.gravityScale != 1)
+                {
+                    rb.gravityScale = 1;
+                }
+                Jump();
             }
 
-            // Jump
-            //Debug.Log("Fly little bird");
-            rb.velocity = Vector2.up * f_Speed;
+            // Pause action
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                GameManager._GameManagerInstance.Pause();
+            }
         }
+    }
 
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            if (Time.timeScale != 0)
-            {
-                Time.timeScale = 0;
-            }
-            else
-            {
-                Time.timeScale = 1; 
-            }
-        }
+    private void Jump()
+    {
+        rb.velocity = Vector2.up * _speed;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "GameOver")
+        // Game over condition
+        if (collision.gameObject.tag == "GameOver" && _isPlaying)
         {
-            this.gameObject.GetComponent<AudioSource>().Play();
-            gameManager.GameOver();
+            _isPlaying = false;
+            _animator.SetTrigger("BirdDeath"); // Change the animation state
+            this.gameObject.GetComponent<AudioSource>().Play(); 
+            
+            GameManager._GameManagerInstance.GameOver();
         }
     }
 }

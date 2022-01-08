@@ -5,38 +5,45 @@ using UnityEngine;
 public class PipeMovement : MonoBehaviour
 {
     
-    public float f_Speed = 5.0f;
-    public GameManager _gameManager;
+    public float _Speed = 5.0f;
 
-    
+    public LayerMask _HitMask;
+    private ParticleSystem _particleSystem;
+    private SpriteRenderer _spriteRenderer; 
+    private AudioSource _audioSource;
 
-    // Start is called before the first frame update
     void Start()
     {
-        
+        _particleSystem = GetComponent<ParticleSystem>();   
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+        _audioSource = GetComponent<AudioSource>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        Debug.DrawRay(this.transform.position, Vector2.left * 5.5f, Color.red);
+        Debug.DrawRay(new Vector2(this.transform.position.x, this.transform.position.y - 0.5f), Vector2.left * 5.5f, Color.red);
+        
+        if (Physics2D.Raycast( new Vector2(this.transform.position.x, this.transform.position.y - 0.5f), Vector2.left, 5.5f, _HitMask))
+        {
+            _particleSystem.Play();
+        }
 
         if (transform.position.x <= -12)
         {
             Destroy(gameObject);
         }
 
-        transform.position += Vector3.left * f_Speed * Time.deltaTime;
+        transform.position += Vector3.left * _Speed * Time.deltaTime;
     }
 
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log(collision);
         if (collision.gameObject.tag == "Player")
         {
-            //Debug.Log("SCOOOOOOOORREEEE");
-            _gameManager.AddScore();
+            _audioSource.Play();
+            GameManager._GameManagerInstance.AddScore();
+            _spriteRenderer.enabled = false;
         }
     }
 }
