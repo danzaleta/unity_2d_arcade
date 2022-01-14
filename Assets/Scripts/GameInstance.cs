@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class GameInstance : MonoBehaviour
 {
-    // PUBLIC
     public static GameInstance _GameInstance;
-    public int _FPS = 60;
+    
+    [SerializeField]
+    private int _FPS = 5;
 
     void Awake()
     {

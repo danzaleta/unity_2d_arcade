@@ -10,10 +10,17 @@ public class GameManager : MonoBehaviour
 
     private int _Score;
 
-    public GameObject _player;
-    public GameObject _pipeManager;
-    public Canvas _gameOverCanvas;
-    public TextMeshProUGUI _scoreText;
+    [SerializeField]
+    private GameObject _player;
+
+    [SerializeField]
+    private GameObject _pipeManager;
+
+    [SerializeField]
+    private Canvas _gameOverCanvas;
+
+    [SerializeField]
+    private TextMeshProUGUI _scoreText;
 
     private void Awake()
     {
@@ -31,7 +38,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _gameOverCanvas.GetComponent<Canvas>().enabled = false;
+        _gameOverCanvas.enabled = false;
 
         _player = Instantiate(_player);
         _player.transform.position = new Vector3(-5, 0, 0);
@@ -40,7 +47,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_gameOverCanvas.GetComponent<Canvas>().enabled)
+        if (_gameOverCanvas.enabled)
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
@@ -79,7 +86,7 @@ public class GameManager : MonoBehaviour
     {
         if (_gameOverCanvas != null)
         {
-            _gameOverCanvas.GetComponent<Canvas>().enabled = true;
+            _gameOverCanvas.enabled = true;
         }
     }
 

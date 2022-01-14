@@ -27,9 +27,4 @@ public class AudioManager : MonoBehaviour
         _audioSource = GetComponent<AudioSource>();
         _audioSource.Play();
     }
-
-    void Update()
-    {
-        
-    }
 }

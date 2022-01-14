@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
+    [SerializeField]
     public GameObject pipePrefab;
+
     private GameObject new_pipePrefab;
+
+    [SerializeField]
+    private float _HeightRange;
 
     private float _Timer = 0;
     
-    public float _MaxTimer = 5;
-    public float _HeightRange;
-
-     void Awake()
+    void Awake()
     {
         this.gameObject.transform.position = new Vector3(0,0,0);
     }

@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class BirdPlayerController : MonoBehaviour
 {  
-    // PUBLIC
-    public float _speed = 3.2f;
+    [SerializeField]
+    private float _speed = 3.2f;
 
     // PRIVATE
     private bool _isPlaying;
     private Rigidbody2D rb;
     private Animator _animator;
+    private AudioSource _hitSound;
 
     private void Awake()
     {
@@ -18,6 +19,7 @@ public class BirdPlayerController : MonoBehaviour
         rb.gravityScale = 0;
 
         _animator = GetComponent<Animator>();
+        _hitSound = GetComponent<AudioSource>();
     }
 
     void Start()
@@ -59,7 +61,7 @@ public class BirdPlayerController : MonoBehaviour
         {
             _isPlaying = false;
             _animator.SetTrigger("BirdDeath"); // Change the animation state
-            this.gameObject.GetComponent<AudioSource>().Play(); 
+            _hitSound.Play(); 
             
             GameManager._GameManagerInstance.GameOver();
         }

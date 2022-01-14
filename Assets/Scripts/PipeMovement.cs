@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class PipeMovement : MonoBehaviour
 {
+    [SerializeField]
+    private float _Speed = 5.0f;
     
-    public float _Speed = 5.0f;
+    [SerializeField]
+    private LayerMask _HitMask;
 
-    public LayerMask _HitMask;
     private ParticleSystem _particleSystem;
     private SpriteRenderer _spriteRenderer; 
     private AudioSource _audioSource;
@@ -39,7 +41,7 @@ public class PipeMovement : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.layer == 3)
         {
             _audioSource.Play();
             GameManager._GameManagerInstance.AddScore();
