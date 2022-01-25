@@ -49,10 +49,7 @@ public class GameManager : MonoBehaviour
     {
         if (_gameOverCanvas.enabled)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                Restart();
-            }
+
         }
     }
 

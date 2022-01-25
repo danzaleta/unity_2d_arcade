@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class BirdPlayerController : MonoBehaviour
 {  
     [SerializeField]
     private float _speed = 3.2f;
 
-    // PRIVATE
     private bool _isPlaying;
     private Rigidbody2D rb;
     private Animator _animator;
@@ -28,7 +28,8 @@ public class BirdPlayerController : MonoBehaviour
     }
 
     void Update()
-    {
+    {   
+        /*
         if (_isPlaying)
         {
             // Jump action
@@ -47,6 +48,7 @@ public class BirdPlayerController : MonoBehaviour
                 GameManager._GameManagerInstance.Pause();
             }
         }
+        */
     }
 
     private void Jump()
@@ -54,11 +56,32 @@ public class BirdPlayerController : MonoBehaviour
         rb.velocity = Vector2.up * _speed;
     }
 
+    public void OnJump(InputAction.CallbackContext value)
+    {
+        if (value.started)
+        {
+            if (rb.gravityScale != 1)
+            {
+                rb.gravityScale = 1;
+            }
+            Jump();
+        }
+    }
+
+    public void OnPause(InputAction.CallbackContext value)
+    {
+        if (value.started)
+        {
+            GameManager._GameManagerInstance.Pause();    
+        }
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         // Game over condition
         if (collision.gameObject.tag == "GameOver" && _isPlaying)
         {
+            this.gameObject.GetComponent<Collider2D>().enabled = false;
             _isPlaying = false;
             _animator.SetTrigger("BirdDeath"); // Change the animation state
             _hitSound.Play(); 
